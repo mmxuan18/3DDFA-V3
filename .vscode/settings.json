@@ -1,0 +1,8 @@
+{
+    "python.autoComplete.extraPaths": [
+      "/root/mlinxiang/vh_exp/3DDFA-V3/"
+    ],
+    "python.analysis.extraPaths": [
+        "/root/mlinxiang/vh_exp/3DDFA-V3/"
+    ]
+  }

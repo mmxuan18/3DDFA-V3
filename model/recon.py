@@ -73,7 +73,7 @@ class face_model:
 
         self.device = self.args.device
         model = np.load("./assets/face_model.npy",allow_pickle=True).item()
-
+        # 35709顶点
         # mean shape, size (107127, 1)
         self.u = torch.tensor(model['u'], requires_grad=False, dtype=torch.float32, device=self.device)
         # face identity bases, size (107127, 80)
@@ -429,7 +429,7 @@ class face_model:
             seg[:,:,i] = mask.squeeze()
         return seg
 
-    def forward(self):
+    def forward(self, is_gen_feature=False):
         assert self.net_recon.training == False
         alpha = self.net_recon(self.input_img)
 
@@ -505,6 +505,23 @@ class face_model:
         if self.args.seg_visible:
             seg_visible = self.segmentation_visible(v3d, visible_idx)
             result_dict['seg_visible'] = seg_visible.detach().cpu().numpy()
+
+        if is_gen_feature:
+            feat_dict = {
+                'id': alpha_dict['id'].detach().cpu().numpy(),
+                'exp': alpha_dict['exp'].detach().cpu().numpy(),
+                'alb': alpha_dict['alb'].detach().cpu().numpy(),
+                'angle': alpha_dict['angle'].detach().cpu().numpy(),
+                'sh': alpha_dict['sh'].detach().cpu().numpy(),
+                'trans': alpha_dict['trans'].detach().cpu().numpy(),
+                'lmd68': result_dict['ldm68'],
+                'v3d': result_dict['v3d'],
+                # 'v2d': result_dict['v2d'],
+                # 'render_mask': result_dict['render_mask'],
+                # 'uv_coords': result_dict['uv_coords']
+            }
+
+            return feat_dict
 
         # use median-filtered-weight pca-texture for texture blending at invisible region, todo: poisson blending should give better-looking results
         if self.args.extractTex:
