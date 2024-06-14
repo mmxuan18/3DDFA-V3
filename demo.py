@@ -178,6 +178,8 @@ if __name__ == '__main__':
                         help='save obj use texture from BFM model')
     parser.add_argument('--extractTex', default=True, type=lambda x: x.lower() in ['true', '1'],
                         help='save obj use texture extracted from input image')
+    parser.add_argument('--backbone', default='resnet50', type=str,
+                        help='backbone for reconstruction, support for resnet50 and mbnetv3')
     parser.add_argument('--gen_feat', default=False, type=bool, help='only gen feature')
 
     logging.basicConfig(filename='my_log.log',

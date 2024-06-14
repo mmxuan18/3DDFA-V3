@@ -2,12 +2,15 @@
 
 By [Zidu Wang](https://scholar.google.com/citations?user=7zD5f0IAAAAJ&hl=zh-CN&oi=ao), [Xiangyu Zhu](https://xiangyuzhu-open.github.io/homepage/), [Tianshuo Zhang](tianshuo.zhang@nlpr.ia.ac.cn), [Baiqin Wang](wangbaiqin2024@ia.ac.cn) and [Zhen Lei](http://www.cbsr.ia.ac.cn/users/zlei/).
 
-This repository is the official implementation of [3DDFA_V3](https://arxiv.org/abs/2312.00311) in [CVPR2024 (Highlight)](https://cvpr.thecvf.com/Conferences/2024/AcceptedPapers).
+This repository is the official implementation of [3DDFA_V3](https://arxiv.org/abs/2312.00311) in [CVPR2024 (Highlight)](https://cvpr.thecvf.com/virtual/2024/awards_detail).
 
 ![teaser](/examples/teaser/teaser.jpg)
 
 [3DDFA_V3](https://arxiv.org/abs/2312.00311) uses the geometric guidance of facial part segmentation for face reconstruction, improving the alignment of reconstructed facial features with the original image and excelling at capturing extreme expressions. The key idea is to transform the target and prediction into semantic point sets, optimizing the distribution of point sets to ensure that the reconstructed regions and the target share the same geometry.
 
+## News
+
+* [06/14/2024] We provide a fast version based on [MobileNet-V3](https://arxiv.org/abs/1905.02244), which achieves similar results to the ResNet-50 version at a higher speed. Please note that if your environment supports ResNet-50, we still strongly recommend using the ResNet-50 version. (The MobileNet-V3 version is still under testing, and we may update it further in the future.)
 
 ## Getting Started
 ### Environment
@@ -40,7 +43,7 @@ This repository is the official implementation of [3DDFA_V3](https://arxiv.org/a
 
 
     ```
-    python demo.py --inputpath examples/ --savepath examples/results --device cuda --iscrop 1 --detector retinaface --ldm68 1 --ldm106 1 --ldm106_2d 1 --ldm134 1 --seg_visible 1 --seg 1 --useTex 1 --extractTex 1
+    python demo.py --inputpath examples/ --savepath examples/results --device cuda --iscrop 1 --detector retinaface --ldm68 1 --ldm106 1 --ldm106_2d 1 --ldm134 1 --seg_visible 1 --seg 1 --useTex 1 --extractTex 1 --backbone resnet50
     ```
 
      - `--inputpath`: path to the test data, should be a image folder.
@@ -53,7 +56,8 @@ This repository is the official implementation of [3DDFA_V3](https://arxiv.org/a
 
      - `--ldm68`, `--ldm106`, `--ldm106_2d` and `--ldm134`: save and show landmarks.
 
-
+     - `--backbone`: backbone for reconstruction, support for resnet50 and mbnetv3.
+  
      <br>With the 3D mesh annotations provided by [3DDFA_V3](https://arxiv.org/abs/2312.00311), we can generate 2D facial segmentation results based on the 3D mesh:
 
 
@@ -67,7 +71,7 @@ This repository is the official implementation of [3DDFA_V3](https://arxiv.org/a
 
      - `--useTex`: save .obj use texture from BFM model.
 
-     - `--useTex`: save .obj use texture extracted from the input image. We use median-filtered-weight pca-texture for texture blending at invisible region (Poisson blending should give better-looking results).
+     - `--extractTex`: save .obj use texture extracted from the input image. We use median-filtered-weight pca-texture for texture blending at invisible region (Poisson blending should give better-looking results).
 
 3. Results.
      - `image_name.png`: the visualization results.
