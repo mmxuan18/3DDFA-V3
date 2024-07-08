@@ -180,7 +180,7 @@ if __name__ == '__main__':
                         help='save obj use texture extracted from input image')
     parser.add_argument('--backbone', default='resnet50', type=str,
                         help='backbone for reconstruction, support for resnet50 and mbnetv3')
-    parser.add_argument('--gen_feat', default=False, type=bool, help='only gen feature')
+    parser.add_argument('--gen_feat', default="False", type=str, help='only gen feature')
 
     logging.basicConfig(filename='my_log.log',
                     filemode='w',
@@ -189,7 +189,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     os.makedirs(args.savepath, exist_ok=True)
-    if args.gen_feat:
+    if args.gen_feat == "True":
         videos = []
         for item in os.listdir(args.inputpath):
             video_name = item.strip()

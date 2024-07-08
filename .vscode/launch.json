@@ -13,8 +13,8 @@
             "python": "${command:python.interpreterPath}",
             "cwd": "${workspaceFolder}/",
             "console": "integratedTerminal",
-            // "args": ["--inputpath","examples/hdtf","--savepath","examples/results3",  "--device","cuda","--iscrop","1","--detector","retinaface","--ldm68", "1","--ldm106","1","--ldm106_2d","1","--ldm134","1","--seg_visible","1",  "--seg","1","--useTex","1","--extractTex","1", "--gen_feat", "True"],
-            "args": ["--inputpath","/root/mlinxiang/vh_exp/FaceFormer/HDTF/tmp","--savepath","/root/mlinxiang/vh_exp/FaceFormer/HDTF/npy",  "--device","cuda","--iscrop","1","--detector","retinaface","--ldm68", "1","--ldm106","0","--ldm106_2d","0","--ldm134","0","--seg_visible","1",  "--seg","1","--useTex","0","--extractTex","1", "--gen_feat", "True"],
+            "args": ["--inputpath","examples/","--savepath","examples/results3",  "--device","cuda","--iscrop","1","--detector","retinaface","--ldm68", "1","--ldm106","1","--ldm106_2d","1","--ldm134","1","--seg_visible","1",  "--seg","1","--useTex","1","--extractTex","1", "--gen_feat", "False"],
+            // "args": ["--inputpath","/root/mlinxiang/vh_exp/FaceFormer/HDTF/tmp","--savepath","/root/mlinxiang/vh_exp/FaceFormer/HDTF/npy",  "--device","cuda","--iscrop","1","--detector","retinaface","--ldm68", "1","--ldm106","0","--ldm106_2d","0","--ldm134","0","--seg_visible","1",  "--seg","1","--useTex","0","--extractTex","1", "--gen_feat", "True"],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/",
                 // ./data/guide.mp4

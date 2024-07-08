@@ -550,3 +550,44 @@ class face_model:
             result_dict['extractTex'] = v_colors
 
         return result_dict
+    
+    def forward_pair(self, is_gen_feature=False):
+        assert self.net_recon.training == False
+        alpha = self.net_recon(self.input_img)
+
+        alpha_dict = self.split_alpha(alpha)
+        face_shape = self.compute_shape(alpha_dict['id'], alpha_dict['exp'])
+        rotation = self.compute_rotation(alpha_dict['angle'])
+        face_shape_transformed = self.transform(face_shape, rotation, alpha_dict['trans'])
+
+        # face vertice in 3d
+        v3d = self.to_camera(face_shape_transformed)
+
+        # face vertice in 2d image plane
+        v2d = self.to_image(v3d)
+
+        # compute face texture with albedo and lighting
+        face_albedo = self.compute_albedo(alpha_dict['alb'])
+        face_norm = self.compute_norm(face_shape)
+        face_norm_roted = face_norm @ rotation
+        face_texture = self.compute_texture(face_albedo, face_norm_roted, alpha_dict['sh'])
+
+        # render shape with texture
+        mask, _, pred_image, _ = self.renderer(v3d, self.tri, torch.clamp(face_texture, 0, 1), visible_vertice = False)
+
+        result_dict = {
+            'v3d': v3d.detach().cpu().numpy(),
+            'v2d': v2d.detach().cpu().numpy(),
+            'face_texture': np.clip(face_texture.detach().cpu().numpy(), 0, 1),
+            'tri': self.tri.detach().cpu().numpy(),
+            'uv_coords': self.uv_coords.detach().cpu().numpy(),
+            'render_face': pred_image.detach().cpu().permute(0, 2, 3, 1).numpy(),
+            'render_mask': mask.detach().cpu().permute(0, 2, 3, 1).numpy(),
+        }
+
+        # landmarks 68 3d
+        if self.args.ldm68:
+            v2d_68 = self.get_landmarks_68(v2d)
+            result_dict['ldm68'] = v2d_68.detach().cpu().numpy()
+
+        return result_dict
